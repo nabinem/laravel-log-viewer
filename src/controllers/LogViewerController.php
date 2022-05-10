@@ -46,9 +46,16 @@ class LogViewerController extends BaseController
      */
     public function index()
     {
+        $folder = $this->request->query('folder');
+        
         $folderFiles = [];
-        if ($this->request->input('f')) {
-            $this->log_viewer->setFolder(Crypt::decrypt($this->request->input('f')));
+        if (!empty($folder) || $this->request->input('f')) {
+            if (!empty($folder)){
+                $this->log_viewer->setFolder($folder);
+            } else {
+                $this->log_viewer->setFolder(Crypt::decrypt($this->request->input('f')));
+            }
+            
             $folderFiles = $this->log_viewer->getFolderFiles(true);
         }
         if ($this->request->input('l')) {
@@ -64,7 +71,7 @@ class LogViewerController extends BaseController
             'folders' => $this->log_viewer->getFolders(),
             'current_folder' => $this->log_viewer->getFolderName(),
             'folder_files' => $folderFiles,
-            'files' => $this->log_viewer->getFiles(true),
+            'files' => $this->log_viewer->getLogFiles(true),
             'current_file' => $this->log_viewer->getFileName(),
             'standardFormat' => true,
             'structure' => $this->log_viewer->foldersAndFiles(),
@@ -78,10 +85,8 @@ class LogViewerController extends BaseController
 
         if (is_array($data['logs']) && count($data['logs']) > 0) {
             $firstLog = reset($data['logs']);
-            if ($firstLog) {
-                if (!$firstLog['context'] && !$firstLog['level']) {
-                    $data['standardFormat'] = false;
-                }
+            if (!$firstLog['context'] && !$firstLog['level']) {
+                $data['standardFormat'] = false;
             }
         }
 

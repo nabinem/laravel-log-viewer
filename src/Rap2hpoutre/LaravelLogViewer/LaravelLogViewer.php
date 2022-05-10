@@ -372,5 +372,19 @@ class LaravelLogViewer
         return;
     }
 
+    public function getLogFiles($basename = false)
+    {
+        $logsPath = 'logs'.(!empty($this->folder) ? '/'.$this->folder : '');
+        $files = glob(storage_path() . '/'.$logsPath.'/*.log');
+        $files = array_reverse($files);
+        $files = array_filter($files, 'is_file');
+        if ($basename && is_array($files)) {
+            foreach ($files as $k => $file) {
+                $files[$k] = basename($file);
+            }
+        }
+        return array_values($files);
+    }
+
 
 }
