@@ -1,3 +1,16 @@
+## Installation
+    
+    To install master branch, add repo url to repositories key in composer.json file.
+
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:nabinem/laravel-log-viewer.git"
+        }
+    ]
+    
+   composer require  nabinem/laravel-log-viewer:dev-master
+
 Laravel log viewer
 ==================
 
