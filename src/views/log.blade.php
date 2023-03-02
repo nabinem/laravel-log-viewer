@@ -174,7 +174,11 @@
   <div class="row">
     <div class="col sidebar mb-3">
       <h1><i class="fa fa-calendar" aria-hidden="true"></i> Laravel Log Viewer</h1>
-      <p class="text-muted"><i>by Rap2h</i></p>
+      <div class="" style="margin-bottom: 10px;">
+        <a href="?folder=archives" class="btn btn-info">
+            Archives
+        </a>
+      </div>
 
       <div class="custom-control custom-switch" style="padding-bottom:20px;">
         <input type="checkbox" class="custom-control-input" id="darkSwitch">
@@ -182,16 +186,8 @@
       </div>
 
       <div class="list-group div-scroll">
-        @foreach($folders as $folder)
-          <div class="list-group-item">
-            <?php
-            \Rap2hpoutre\LaravelLogViewer\LaravelLogViewer::DirectoryTreeStructure( $storage_path, $structure );
-            ?>
-
-          </div>
-        @endforeach
         @foreach($files as $file)
-          <a href="?l={{ \Illuminate\Support\Facades\Crypt::encrypt($file) }}"
+          <a href="?l={{ \Illuminate\Support\Facades\Crypt::encrypt($file).(!empty($current_folder) ? '&folder='.$current_folder : '') }}"
              class="list-group-item @if ($current_file == $file) llv-active @endif">
             {{$file}}
           </a>
