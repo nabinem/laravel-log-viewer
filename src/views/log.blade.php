@@ -173,13 +173,21 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col sidebar mb-3">
-      <h1><i class="fa fa-calendar" aria-hidden="true"></i> Laravel Log Viewer</h1>
-      <div class="" style="margin-bottom: 10px;">
-        <a href="?folder=archives" class="btn btn-info">
-            Archives
-        </a>
-      </div>
-
+      <h1><i class="fa fa-calendar" aria-hidden="true"></i> 
+        <a class="text-muted" href="{{ url('logs') }}"> Laravel Log Viewer</a>
+      </h1>
+        @foreach ($folders as $folder)
+          <div class="" style="margin-bottom: 10px;">
+            <a 
+              href="?folder={{ basename($folder) }}" 
+              class="btn
+                    {{ basename($folder) == $current_folder ? 'btn-primary' : 'btn-outline-primary' }}
+                  "
+              >
+              {{ basename($folder) }}
+            </a>
+          </div>
+        @endforeach
       <div class="custom-control custom-switch" style="padding-bottom:20px;">
         <input type="checkbox" class="custom-control-input" id="darkSwitch">
         <label class="custom-control-label" for="darkSwitch" style="margin-top: 6px;">Dark Mode</label>
