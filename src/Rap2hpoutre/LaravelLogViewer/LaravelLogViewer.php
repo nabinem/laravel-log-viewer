@@ -180,7 +180,7 @@ class LaravelLogViewer
         }
 
         $log_data = preg_split($this->pattern->getPattern('logs'), $file);
-
+        
         if ($log_data[0] < 1) {
             array_shift($log_data);
         }
@@ -194,9 +194,22 @@ class LaravelLogViewer
                         if (!isset($current[4])) {
                             continue;
                         }
+                        $contextData = [];
+                        $jsonStrMatch = '';
+                        if (preg_match('/(\{".*),"exception":/', $current[4], $jsonStrMatches)){
+                            $jsonStrMatch = $jsonStrMatches[1].'}';
+                        } else if (preg_match('/\{".*\}/', $current[4], $jsonStrMatches)){
+                            $jsonStrMatch = $jsonStrMatches[0];
+                        }
+
+                        if ($jsonStrMatch){
+                            $contextData =  json_decode($jsonStrMatch, true);
+                            if (!$contextData) $contextData =  json_decode($jsonStrMatch.'}', true);
+                        }
 
                         $log[] = array(
                             'context' => $current[3],
+                            'contextData' => $contextData,
                             'level' => $level,
                             'folder' => $this->folder,
                             'level_class' => $this->level->cssClass($level),
