@@ -229,7 +229,20 @@
                 <td class="nowrap text-{{{$log['level_class']}}}">
                   <span class="fa fa-{{{$log['level_img']}}}" aria-hidden="true"></span>&nbsp;&nbsp;{{$log['level']}}
                 </td>
-                <td class="text">{{$log['context']}}</td>
+                <td class="text text-center">
+                  {{$log['context']}}
+                  @if(!empty($log['contextData']))
+                    <br/>
+                    @foreach($log['contextData'] as $key => $context)
+                      @if (!empty($context))
+                        @if(is_string($key))
+                          <b>{{ $key }}:</b> 
+                        @endif
+                        {{ is_array($context) ? json_encode($context, JSON_PRETTY_PRINT) : $context }}<br/>
+                      @endif
+                    @endforeach
+                  @endif
+                </td>
               @endif
               <td class="date">{{{$log['date']}}}</td>
               <td class="text">
