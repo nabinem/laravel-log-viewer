@@ -233,10 +233,10 @@
                   {{$log['context']}}
                   @if(!empty($log['contextData']))
                     <br/>
-                    @foreach($log['contextData'] as $key => $context)
+                    @foreach($log['contextData'] as $field => $context)
                       @if (!empty($context))
-                        @if(is_string($key))
-                          <b>{{ $key }}:</b> 
+                        @if(is_string($field))
+                          <b>{{ $field }}:</b> 
                         @endif
                         {{ is_array($context) ? json_encode($context, JSON_PRETTY_PRINT) : $context }}<br/>
                       @endif
